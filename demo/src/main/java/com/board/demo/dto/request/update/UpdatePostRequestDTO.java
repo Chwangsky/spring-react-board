@@ -1,5 +1,7 @@
 package com.board.demo.dto.request.update;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -29,7 +31,7 @@ public class UpdatePostRequestDTO {
     @Size(min = 4, max = 1999, message = "내용의 길이는 4글자 이상, 2000글자 미만입니다.")
     String content;
 
-    String removeFiles; // TODO removeFiles="1,2,3"과 같은 방식으로 넘어온다. 1, 2, 3은 삭제할 file의 id를 의미
+    List<Integer> filesToRemove;
 
     MultipartFile[] newFiles;
 }

@@ -2,6 +2,7 @@ package com.board.demo.controller;
 
 import jakarta.validation.Valid;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.board.demo.dto.request.update.UpdatePostRequestDTO;
+import com.board.demo.dto.response.update.PostUpdateResponseDTO;
 import com.board.demo.dto.response.update.UpdateResponseDTO;
 import com.board.demo.service.UpdateService;
 
@@ -24,16 +26,14 @@ public class UpdateController {
     }
 
     @GetMapping
-    public String getModifyForm(@RequestParam("boardId") Integer boardId, Model model) {
-        UpdateResponseDTO dto = boardUpdateService.getupdate(boardId);
-        model.addAttribute("dto", dto);
-        return "/boards/free/update";
+    public ResponseEntity<? super UpdateResponseDTO> getModifyForm(@RequestParam("boardId") Integer boardId) {
+        return boardUpdateService.getupdate(boardId);
     }
 
     @PostMapping
-    public String postModifyForm(@Valid UpdatePostRequestDTO updatePostRequestDTO) {
-        Integer boardId = boardUpdateService.postUpdate(updatePostRequestDTO);
-        return "redirect:/boards/free/views/" + String.valueOf(boardId);
+    public ResponseEntity<? super PostUpdateResponseDTO> postModifyForm(
+            @Valid UpdatePostRequestDTO updatePostRequestDTO) {
+        return boardUpdateService.postUpdate(updatePostRequestDTO);
     }
 
 }
