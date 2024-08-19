@@ -6,13 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.board.demo.dto.request.write.BoardPostBoardRequestDTO;
 import com.board.demo.dto.response.write.BoardWriteResponseDTO;
 import com.board.demo.dto.response.write.PostBoardResponseDTO;
 import com.board.demo.service.WriteService;
 
-@Controller
+@RestController
 @RequestMapping("/boards/free/write")
 public class WriteController {
 

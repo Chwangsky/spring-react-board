@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.board.demo.dto.request.update.UpdatePostRequestDTO;
 import com.board.demo.dto.response.update.PostUpdateResponseDTO;
 import com.board.demo.dto.response.update.UpdateResponseDTO;
 import com.board.demo.service.UpdateService;
 
-@Controller
+@RestController
 @RequestMapping("/boards/free/modify")
 public class UpdateController {
 
