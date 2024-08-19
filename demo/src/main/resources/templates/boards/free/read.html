@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Read Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script th:inline="javascript">
+        const validationCheck = () => {
+            const commentContent = document.getElementById('comment-content').value.trim();
+            if (commentContent.length === 0) {
+                alert("댓글을 입력해주세요");
+                return false;
+            }
+            return true;
+        }
+
+        async function deletePost() {
+            const password = document.getElementById('deletePassword').value.trim();
+            if (password === '') {
+                alert('비밀번호를 입력해주세요.');
+                return;
+            }
+
+            const boardId = document.getElementById('boardId').value.trim();
+
+            try {
+                const response = await fetch('/boards/free/delete', {
+                    method: 'POST',  // 비밀번호 검증 및 삭제 요청
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        boardId: boardId,
+                        password: password
+                    })
+                });
+
+                if (response.status === 200) {
+                    // 요청이 성공한 경우
+                    alert('게시글이 성공적으로 삭제되었습니다.');
+                    window.location.href = '/boards/free/list'; // 리다이렉트는 프론트에서
+                } else if (response.status === 401) {
+                    // 인증 실패 (비밀번호 불일치 등)
+                    alert('비밀번호가 일치하지 않습니다.'); 
+                } else {
+                    // 다른 에러 처리
+                    alert('삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                }
+            } catch (error) {
+                // 네트워크 오류 등
+                console.error('Error:', error);
+                alert('삭제 요청을 처리하는 중에 오류가 발생했습니다.');
+            }
+        }
+
+        let deleteModal;
+
+        // 모달 열기
+        function openModal() {
+            deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+
+        // 모달 닫기
+        function closeModal() {
+            if (deleteModal) {
+                deleteModal.hide();
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">게시판 - 보기</h2>
+
+        <div th:if="${dto != null}">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3 th:text="${dto.boardItem.title}"></h3>
+                    <small class="text-muted">카테고리: <span th:text="${dto.boardItem.category}"></span></small>
+                </div>
+                <div class="card-body">
+                    <p class="card-text" th:text="${dto.boardItem.content}"></p>
+                </div>
+                <div class="card-footer text-muted">
+                    <small>등록일: 
+                        <span id="regDate" th:text="${#temporals.format(dto.boardItem.regDate, 'yyyy-MM-dd HH:mm')}"></span>
+                    </small><br>
+                    <small>수정일: 
+                        <span id="updateDate" th:text="${#temporals.format(dto.boardItem.updateDate, 'yyyy-MM-dd HH:mm')}"></span>
+                    </small>
+                </div>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(dto.fileItems)}">
+                <h4>첨부 파일</h4>
+                <ul class="list-group mb-4">
+                    <li class="list-group-item" th:each="file : ${dto.fileItems}">
+                        <strong th:text="${file.orgName}"></strong> 
+                        <small class="text-muted">
+                            (<span th:text="${file.attachType}"></span>, 
+                            <span th:text="${file.byteSize}"></span> bytes)
+                        </small><br>
+                        <small>파일 경로: 
+                            <a th:href="@{/download.do(id=${file.fileId})}" th:text="${file.orgName}"></a>
+                        </small>
+                    </li>
+                </ul>
+            </div>
+
+            <h4>댓글</h4>
+            <ul class="list-group mb-4">
+                <li class="list-group-item" th:each="comment : ${dto.commentItems}">
+                    <small class="text-muted">작성일: <span th:text="${#temporals.format(comment.regDate, 'yyyy-MM-dd HH:mm')}"></span></small>
+                    <small class="text-muted">작성자: <span th:text="${comment.writer}"></span></small>
+                    <p th:text="${comment.content}"></p>
+                </li>
+            </ul>
+
+            <!-- 댓글 작성 폼 -->
+            <h4>댓글 작성</h4>
+            <form th:action="@{/boards/free/views}" 
+                  method="post" 
+                  onsubmit="return validationCheck()">
+                <input id="boardId" type="hidden" name="boardId" th:value="${dto.boardItem.boardId}">
+
+                <div class="form-group">
+                    <label for="comment-writer">작성자</label>
+                    <textarea id="comment-writer" name="writer" class="form-control" cols="10" required></textarea>
+                    <label for="comment-content">댓글 내용</label>
+                    <textarea id="comment-content" name="content" class="form-control" rows="4" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">댓글 등록</button>
+            </form>
+
+            <!-- 목록 버튼 -->
+            <button type="button" class="btn btn-secondary" th:onclick="|window.location.href='@{/boards/free/list}'|">목록</button>
+
+            <!-- 수정 버튼 -->
+            <button type="button" class="btn btn-primary" th:onclick="|window.location.href='@{/boards/free/modify(boardId=${dto.boardItem.boardId})}'|">수정</button>
+
+            <!-- 삭제 버튼 -->
+            <button type="button" class="btn btn-danger" onclick="openModal()">삭제</button>
+
+            <!-- 삭제 확인 모달 -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">게시글 삭제</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>비밀번호</p>
+                            <input type="password" id="deletePassword" class="form-control" placeholder="비밀번호를 입력해주세요" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" onclick="deletePost()">삭제</button>
+                            <button type="button" class="btn btn-secondary" onclick="closeModal()">취소</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.board.demo.mapper.BoardSearchMapper">
+
+    <!-- 검색결과를 pagination 고려하여 가져오는 쿼리-->
+    <select id="boardSearch" resultType="com.board.demo.entity.BoardSearchEntity">
+        SELECT
+            c.name AS category,
+            b.board_id AS boardId,
+            (
+                SELECT COUNT(*)
+                FROM files f
+                WHERE f.board_id = b.board_id
+            ) AS fileCount,
+            b.title AS title,
+            b.writer AS writer,
+            b.views AS views,
+            b.reg_date AS regDate,
+            b.update_date AS updateDate
+        FROM
+            board b
+        LEFT JOIN
+            category c ON b.category_id = c.category_id
+        WHERE
+            1=1
+            <if test="regDateStart != null and regDateStart != ''">
+                AND b.reg_date <![CDATA[ >= ]]> #{regDateStart} <!-- TODO 가독성 이슈 -->
+            </if>
+            <if test="regDateEnd != null and regDateEnd != ''">
+                AND b.reg_date <![CDATA[ <= ]]> #{regDateEnd}
+            </if>
+            <if test="categoryName != null and categoryName != ''">
+                AND c.name = #{categoryName}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (b.title LIKE CONCAT('%', #{keyword}, '%')
+                    OR
+                    b.content LIKE CONCAT('%', #{keyword}, '%')
+                    OR
+                    b.writer LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        ORDER BY
+            b.board_id DESC
+        LIMIT #{limit}
+        OFFSET #{offset}
+    </select>
+
+    <!-- 검색결과의 전체 개수를 가져오는 쿼리-->
+    <select id="boardSearchCount" resultType="int">
+        SELECT
+            COUNT(*) as totalCount
+        FROM
+            board b
+        LEFT JOIN
+            category c ON b.category_id = c.category_id
+        WHERE
+            1=1
+            <if test="regDateStart != null and regDateStart != ''">
+                AND b.reg_date <![CDATA[ >= ]]> #{regDateStart}
+            </if>
+            <if test="regDateEnd != null and regDateEnd != ''">
+                AND b.reg_date <![CDATA[ <= ]]> #{regDateEnd}
+            </if>
+            <if test="categoryName != null and categoryName != ''">
+                AND c.name = #{categoryName}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (b.title LIKE CONCAT('%', #{keyword}, '%')
+                    OR
+                    b.content LIKE CONCAT('%', #{keyword}, '%')
+                    OR
+                    b.writer LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+    </select>
+
+    <!-- findAllCategoryIdsAndNames --> 
+
+    <select id="findAllCategoryIdsAndNames">
+    
+    </select>
+</mapper>
