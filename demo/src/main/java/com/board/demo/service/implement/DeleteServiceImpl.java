@@ -1,4 +1,4 @@
-package com.board.demo.service.implementation;
+package com.board.demo.service.implement;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

@@ -18,7 +18,7 @@ public interface BoardSearchMapper {
                         @Param("categoryName") String categoryName,
 
                         @Param("keyword") String keyword,
-                        @Param("limit") int limit, @Param("offset") int offset);
+                        @Param("limit") Integer limit, @Param("offset") Integer offset);
 
         int boardSearchCount(@Param("regDateStart") String regDateStart,
                         @Param("regDateEnd") String regDateEnd,

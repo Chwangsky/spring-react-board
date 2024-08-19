@@ -1,9 +1,10 @@
 package com.board.demo.controller;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.board.demo.dto.request.list.BoardListRequestDTO;
 import com.board.demo.dto.response.list.BoardListResponseDTO;
@@ -12,7 +13,7 @@ import com.board.demo.service.ListService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/boards/free/list")
 public class ListController {
 
@@ -23,13 +24,9 @@ public class ListController {
     }
 
     @GetMapping
-    public String showBoardList(BoardListRequestDTO boardSearchDTO, Model model) {
+    public ResponseEntity<? super BoardListResponseDTO> showBoardList(BoardListRequestDTO boardSearchDTO, Model model) {
 
-        BoardListResponseDTO boardListResponseDTO = boardListService.searchBoards(boardSearchDTO);
-
-        model.addAttribute("dto", boardListResponseDTO);
-
-        return "boards/free/list";
+        return boardListService.searchBoards(boardSearchDTO);
     }
 
 }

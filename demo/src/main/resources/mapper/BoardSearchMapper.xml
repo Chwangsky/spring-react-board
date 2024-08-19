@@ -27,7 +27,7 @@
         WHERE
             1=1
             <if test="regDateStart != null and regDateStart != ''">
-                AND b.reg_date <![CDATA[ >= ]]> #{regDateStart} <!-- TODO 가독성 이슈 -->
+                AND b.reg_date <![CDATA[ >= ]]> #{regDateStart} 
             </if>
             <if test="regDateEnd != null and regDateEnd != ''">
                 AND b.reg_date <![CDATA[ <= ]]> #{regDateEnd}
@@ -74,11 +74,5 @@
                     OR
                     b.writer LIKE CONCAT('%', #{keyword}, '%'))
             </if>
-    </select>
-
-    <!-- findAllCategoryIdsAndNames --> 
-
-    <select id="findAllCategoryIdsAndNames">
-    
     </select>
 </mapper>
