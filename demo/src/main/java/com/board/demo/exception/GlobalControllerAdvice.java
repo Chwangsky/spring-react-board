@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.board.demo.common.ResponseCode;
+import com.board.demo.common.ResponseMessage;
+import com.board.demo.dto.response.ResponseDTO;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -14,20 +18,29 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalControllerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleConstraintViolationException(
-            MethodArgumentNotValidException ex,
-            @RequestBody String body) {
+    public ResponseEntity<ResponseDTO> handleConstraintViolationException(
+            MethodArgumentNotValidException ex) {
 
         log.warn("validation 조건을 위반하였습니다.");
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+
+        ResponseDTO body = ResponseDTO.builder()
+                .code(ResponseCode.FORMAT_ERROR)
+                .message(ResponseMessage.FORMAT_ERROR)
+                .build();
+
+        return ResponseEntity.badRequest().body(body);
     }
 
     @ExceptionHandler(PasswordNotMatchException.class)
     public ResponseEntity<Object> handlePasswordNotMatchException(
-            PasswordNotMatchException ex,
-            @RequestBody String body) {
+            PasswordNotMatchException ex) {
 
         log.warn("게시글의 비밀번호가 일치하지 않습니다.");
-        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+        ResponseDTO body = ResponseDTO.builder()
+                .code(ResponseCode.FORMAT_ERROR)
+                .message(ResponseMessage.FORMAT_ERROR)
+                .build();
+
+        return ResponseEntity.badRequest().body(body);
     }
 }
