@@ -2,6 +2,7 @@ package com.board.demo.dto.request.read;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ public class PostCommentRequestDTO {
     @NotNull
     Integer boardId;
 
-    @NotBlank
+    @Size(min = 3, max = 4)
     String writer;
 
     @NotBlank

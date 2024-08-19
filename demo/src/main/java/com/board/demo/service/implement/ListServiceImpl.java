@@ -75,7 +75,7 @@ public class ListServiceImpl implements ListService {
                                         paginationDto,
                                         regDateStart, regDateEnd, keyword, categoryName);
 
-                } catch (DataAccessException ex) {
+                } catch (DataAccessException e) {
                         // 데이터베이스 오류가 발생한 경우
                         return ResponseDTO.databaseError();
                 }
