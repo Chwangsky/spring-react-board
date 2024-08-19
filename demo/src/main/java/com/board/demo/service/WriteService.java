@@ -1,12 +1,15 @@
 package com.board.demo.service;
 
+import org.springframework.http.ResponseEntity;
+
 import com.board.demo.dto.request.write.BoardPostBoardRequestDTO;
 import com.board.demo.dto.response.write.BoardWriteResponseDTO;
+import com.board.demo.dto.response.write.PostBoardResponseDTO;
 
 public interface WriteService {
 
-    BoardWriteResponseDTO getWriteForm();
+    ResponseEntity<? super BoardWriteResponseDTO> getWriteForm();
 
-    Integer postBoard(BoardPostBoardRequestDTO dto);
+    ResponseEntity<? super PostBoardResponseDTO> postBoard(BoardPostBoardRequestDTO dto);
 
 }

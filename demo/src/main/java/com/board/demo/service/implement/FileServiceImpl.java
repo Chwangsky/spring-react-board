@@ -42,7 +42,10 @@ public class FileServiceImpl implements FileService {
             Path filePath = Paths.get(uploadDirectory, uuidName);
 
             try {
-                Files.createDirectories(Paths.get(uploadDirectory));
+
+                synchronized (this) { // 여러 스레드가 동시에 폴더를 만들려는 시도 방지
+                    Files.createDirectories(Paths.get(uploadDirectory));
+                }
 
                 try (InputStream inputStream = file.getInputStream()) {
                     Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);

@@ -1,5 +1,6 @@
 package com.board.demo.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.board.demo.dto.request.write.BoardPostBoardRequestDTO;
 import com.board.demo.dto.response.write.BoardWriteResponseDTO;
+import com.board.demo.dto.response.write.PostBoardResponseDTO;
 import com.board.demo.service.WriteService;
 
 @Controller
@@ -21,20 +23,14 @@ public class WriteController {
     }
 
     @GetMapping
-    public String getWriteForm(Model model) {
-        BoardWriteResponseDTO BoardWriteResponseDTO = boardWriteService.getWriteForm();
-
-        model.addAttribute("dto", BoardWriteResponseDTO);
-
-        return "/boards/free/write";
+    public ResponseEntity<? super BoardWriteResponseDTO> getWriteForm() {
+        return boardWriteService.getWriteForm();
     }
 
     @PostMapping
-    public String postBoard(BoardPostBoardRequestDTO boardPostBoardRequestDTO) {
+    public ResponseEntity<? super PostBoardResponseDTO> postBoard(BoardPostBoardRequestDTO boardPostBoardRequestDTO) {
 
-        Integer boardNumber = boardWriteService.postBoard(boardPostBoardRequestDTO);
-
-        return "redirect:/boards/free/views/" + String.valueOf(boardNumber); // 작성한 게시물로 리다이렉트 (PGR)
+        return boardWriteService.postBoard(boardPostBoardRequestDTO); // 작성한 게시물로 리다이렉트 (PGR)
     }
 
 }
