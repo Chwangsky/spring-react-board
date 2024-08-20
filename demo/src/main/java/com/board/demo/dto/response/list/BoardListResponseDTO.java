@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 public class BoardListResponseDTO extends ResponseDTO {
-    private int totalCount;
+    private Integer totalCount;
     private List<BoardDetailResponseItem> boardDetailResponseItems;
     private PaginationDTO paginationDto;
     private List<CategoryIdNameItem> categoryIdNameItems;
