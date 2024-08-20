@@ -44,13 +44,13 @@ public class ListServiceImpl implements ListService {
                 String regDateStart = boardListDTO.getRegDateStart();
                 String regDateEnd = boardListDTO.getRegDateEnd();
                 String keyword = boardListDTO.getKeyword();
-                String categoryName = boardListDTO.getCategoryName();
+                Integer categoryId = boardListDTO.getCategoryId();
 
                 try {
 
                         // 데이터베이스에서 게시글 검색
                         List<BoardSearchEntity> boardSearchEntities = mapper.boardSearch(regDateStart, regDateEnd,
-                                        categoryName,
+                                        categoryId,
                                         keyword, itemsPerPage, offset);
 
                         List<BoardDetailResponseItem> boardDetailResponseItems = boardSearchEntities.stream()
@@ -58,7 +58,7 @@ public class ListServiceImpl implements ListService {
                                         .collect(Collectors.toList());
 
                         // 전체 카운트 조회
-                        int totalCount = mapper.boardSearchCount(regDateStart, regDateEnd, categoryName, keyword);
+                        int totalCount = mapper.boardSearchCount(regDateStart, regDateEnd, categoryId, keyword);
 
                         // 카테고리 목록 조회
                         List<CategoryIdNameEntity> categoryEntities = mapper.findAllCategoryIdsAndNames();
@@ -73,7 +73,7 @@ public class ListServiceImpl implements ListService {
                         // 성공 응답 반환
                         return BoardListResponseDTO.success(totalCount, boardDetailResponseItems, categoriesItems,
                                         paginationDto,
-                                        regDateStart, regDateEnd, keyword, categoryName);
+                                        regDateStart, regDateEnd, keyword, categoryId);
 
                 } catch (DataAccessException e) {
                         // 데이터베이스 오류가 발생한 경우

@@ -32,8 +32,8 @@
             <if test="regDateEnd != null and regDateEnd != ''">
                 AND b.reg_date <![CDATA[ <= ]]> #{regDateEnd}
             </if>
-            <if test="categoryName != null and categoryName != ''">
-                AND c.name = #{categoryName}
+            <if test="categoryId != null">
+                AND c.category_id = #{categoryId}
             </if>
             <if test="keyword != null and keyword != ''">
                 AND (b.title LIKE CONCAT('%', #{keyword}, '%')
@@ -49,7 +49,7 @@
     </select>
 
     <!-- 검색결과의 전체 개수를 가져오는 쿼리-->
-    <select id="boardSearchCount" resultType="int">
+    <select id="boardSearchCount" resultType="Integer">
         SELECT
             COUNT(*) as totalCount
         FROM
@@ -64,8 +64,8 @@
             <if test="regDateEnd != null and regDateEnd != ''">
                 AND b.reg_date <![CDATA[ <= ]]> #{regDateEnd}
             </if>
-            <if test="categoryName != null and categoryName != ''">
-                AND c.name = #{categoryName}
+            <if test="categoryId != null">
+                AND c.category_id = #{categoryId}
             </if>
             <if test="keyword != null and keyword != ''">
                 AND (b.title LIKE CONCAT('%', #{keyword}, '%')

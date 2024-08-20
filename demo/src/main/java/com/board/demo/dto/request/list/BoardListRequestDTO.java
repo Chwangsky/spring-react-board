@@ -16,7 +16,7 @@ public class BoardListRequestDTO {
 
     private String regDateEnd;
 
-    private String categoryName;
+    private Integer categoryId;
 
     private String keyword;
 

@@ -24,7 +24,7 @@ public class ListController {
     }
 
     @GetMapping
-    public ResponseEntity<? super BoardListResponseDTO> showBoardList(BoardListRequestDTO boardSearchDTO, Model model) {
+    public ResponseEntity<? super BoardListResponseDTO> showBoardList(BoardListRequestDTO boardSearchDTO) {
 
         return boardListService.searchBoards(boardSearchDTO);
     }

@@ -24,7 +24,7 @@ public class BoardListResponseDTO extends ResponseDTO {
     private String regDateStart;
     private String regDateEnd;
     private String keyword;
-    private String categoryName;
+    private Integer categoryId;
 
     // 기존 buildResponse 메서드 제거, SuperBuilder를 이용해 직접 빌드하도록 설정
 
@@ -37,7 +37,7 @@ public class BoardListResponseDTO extends ResponseDTO {
             String regDateStart,
             String regDateEnd,
             String keyword,
-            String categoryName) {
+            Integer categoryId) {
 
         BoardListResponseDTO responseDTO = BoardListResponseDTO.builder()
                 .totalCount(totalCount)
@@ -47,7 +47,7 @@ public class BoardListResponseDTO extends ResponseDTO {
                 .regDateStart(regDateStart)
                 .regDateEnd(regDateEnd)
                 .keyword(keyword)
-                .categoryName(categoryName)
+                .categoryId(categoryId)
                 .code(ResponseCode.SUCCESS)
                 .message(ResponseMessage.SUCCESS)
                 .build();

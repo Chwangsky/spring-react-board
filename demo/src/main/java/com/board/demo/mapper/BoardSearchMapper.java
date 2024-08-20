@@ -15,14 +15,14 @@ public interface BoardSearchMapper {
 
                         @Param("regDateStart") String regDateStart,
                         @Param("regDateEnd") String regDateEnd,
-                        @Param("categoryName") String categoryName,
+                        @Param("categoryId") Integer categoryId,
 
                         @Param("keyword") String keyword,
                         @Param("limit") Integer limit, @Param("offset") Integer offset);
 
         int boardSearchCount(@Param("regDateStart") String regDateStart,
                         @Param("regDateEnd") String regDateEnd,
-                        @Param("categoryName") String categoryName,
+                        @Param("categoryId") Integer categoryId,
 
                         @Param("keyword") String keyword);
 
