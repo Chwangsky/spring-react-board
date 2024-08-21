@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class BoardDetailResponseItem {
+public class BoardListItem {
     private String category;
     private int fileCount;
     private int boardId;
@@ -19,8 +19,8 @@ public class BoardDetailResponseItem {
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
 
-    public static BoardDetailResponseItem fromEntity(BoardSearchEntity boardSearchEntity) {
-        return BoardDetailResponseItem.builder()
+    public static BoardListItem fromEntity(BoardSearchEntity boardSearchEntity) {
+        return BoardListItem.builder()
                 .category(boardSearchEntity.getCategory())
                 .fileCount(boardSearchEntity.getFileCount())
                 .boardId(boardSearchEntity.getBoardId())

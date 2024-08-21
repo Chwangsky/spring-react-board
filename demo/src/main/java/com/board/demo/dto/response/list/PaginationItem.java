@@ -8,7 +8,7 @@ import lombok.Getter;
  */
 @Getter
 @Builder
-public class PaginationDTO {
+public class PaginationItem {
     private int totalItems; // 전체 항목 수
     private int itemsPerPage; // 한 페이지당 항목 수
     private int pagesPerSection; // 한 섹션당 페이지 수
@@ -22,16 +22,16 @@ public class PaginationDTO {
     private int totalSection; // 전체 섹션
 
     /**
-     * Creates a PaginationDto from totalItems, itemsPerPage, pagesPerSection, and
+     * Creates a PaginationItem from totalItems, itemsPerPage, pagesPerSection, and
      * currentPage.
      *
      * @param totalItems      Total number of items.
      * @param itemsPerPage    Number of items per page.
      * @param pagesPerSection Number of pages per section.
      * @param currentPage     Current page number.
-     * @return PaginationDto containing pagination information.
+     * @return PaginationItem containing pagination information.
      */
-    public static PaginationDTO createPaginationDto(int totalItems, int itemsPerPage,
+    public static PaginationItem createPaginationItem(int totalItems, int itemsPerPage,
             int pagesPerSection, int currentPage) {
 
         int totalPage = calculateTotalPage(totalItems, itemsPerPage);
@@ -40,7 +40,7 @@ public class PaginationDTO {
         int currentSectionPageBegin = calculateCurrentPageBegin(currentSection, pagesPerSection);
         int currentSectionPageEnd = calculateCurrentPageEnd(currentSection, pagesPerSection, totalPage);
 
-        return PaginationDTO.builder()
+        return PaginationItem.builder()
                 .totalItems(totalItems)
                 .itemsPerPage(itemsPerPage)
                 .pagesPerSection(pagesPerSection)

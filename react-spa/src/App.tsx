@@ -6,6 +6,7 @@ import Container from "./layouts/Container";
 import { LIST_PATH, MODIFY_PATH, READ_PATH, WRITE_PATH } from "./constant";
 import Test from "./Test";
 import BoardList from "./views/List";
+import BingoGame from "./views/bingo";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path={READ_PATH(":boardId")} />
         <Route path={WRITE_PATH()} />
         <Route path={MODIFY_PATH(":boardId")} />
+        <Route path={"/test"} element={<BingoGame />} />
       </Route>
     </Routes>
   );

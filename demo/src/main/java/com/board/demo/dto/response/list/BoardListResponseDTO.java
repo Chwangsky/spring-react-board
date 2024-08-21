@@ -16,8 +16,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class BoardListResponseDTO extends ResponseDTO {
     private Integer totalCount;
-    private List<BoardDetailResponseItem> boardDetailResponseItems;
-    private PaginationDTO paginationDto;
+    private List<BoardListItem> boardListItems;
+    private PaginationItem paginationItem;
     private List<CategoryIdNameItem> categoryIdNameItems;
 
     // form 을 계속 저장하면서 가지고 다니기 위한 변수들
@@ -26,14 +26,11 @@ public class BoardListResponseDTO extends ResponseDTO {
     private String keyword;
     private Integer categoryId;
 
-    // 기존 buildResponse 메서드 제거, SuperBuilder를 이용해 직접 빌드하도록 설정
-
-    // success 메서드 구현
     public static ResponseEntity<BoardListResponseDTO> success(
             int totalCount,
-            List<BoardDetailResponseItem> boardDetailResponseItems,
+            List<BoardListItem> boardListItems,
             List<CategoryIdNameItem> categoryIdNameItems,
-            PaginationDTO paginationDto,
+            PaginationItem paginationItem,
             String regDateStart,
             String regDateEnd,
             String keyword,
@@ -41,9 +38,9 @@ public class BoardListResponseDTO extends ResponseDTO {
 
         BoardListResponseDTO responseDTO = BoardListResponseDTO.builder()
                 .totalCount(totalCount)
-                .boardDetailResponseItems(boardDetailResponseItems)
+                .boardListItems(boardListItems)
                 .categoryIdNameItems(categoryIdNameItems)
-                .paginationDto(paginationDto)
+                .paginationItem(paginationItem)
                 .regDateStart(regDateStart)
                 .regDateEnd(regDateEnd)
                 .keyword(keyword)
@@ -52,7 +49,6 @@ public class BoardListResponseDTO extends ResponseDTO {
                 .message(ResponseMessage.SUCCESS)
                 .build();
 
-        // 응답 생성
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 }

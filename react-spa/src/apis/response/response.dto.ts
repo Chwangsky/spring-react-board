@@ -1,6 +1,6 @@
 import { ResponseCode } from "../../types";
 
-export default interface ResponseDto {
+export default interface ResponseDTO {
     code: ResponseCode;
     message: string;
 }

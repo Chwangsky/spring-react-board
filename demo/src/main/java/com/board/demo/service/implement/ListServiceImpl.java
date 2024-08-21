@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.board.demo.dto.request.list.BoardListRequestDTO;
 import com.board.demo.dto.response.ResponseDTO;
-import com.board.demo.dto.response.list.BoardDetailResponseItem;
+import com.board.demo.dto.response.list.BoardListItem;
 import com.board.demo.dto.response.list.BoardListResponseDTO;
 import com.board.demo.dto.response.list.CategoryIdNameItem;
-import com.board.demo.dto.response.list.PaginationDTO;
+import com.board.demo.dto.response.list.PaginationItem;
 import com.board.demo.entity.BoardSearchEntity;
 import com.board.demo.entity.CategoryIdNameEntity;
 import com.board.demo.mapper.BoardSearchMapper;
@@ -53,8 +53,8 @@ public class ListServiceImpl implements ListService {
                                         categoryId,
                                         keyword, itemsPerPage, offset);
 
-                        List<BoardDetailResponseItem> boardDetailResponseItems = boardSearchEntities.stream()
-                                        .map(BoardDetailResponseItem::fromEntity)
+                        List<BoardListItem> boardDetailResponseItems = boardSearchEntities.stream()
+                                        .map(BoardListItem::fromEntity)
                                         .collect(Collectors.toList());
 
                         // 전체 카운트 조회
@@ -67,12 +67,12 @@ public class ListServiceImpl implements ListService {
                                         .toList();
 
                         // Pagination DTO 생성
-                        PaginationDTO paginationDto = PaginationDTO.createPaginationDto(totalCount, itemsPerPage,
+                        PaginationItem paginationItem = PaginationItem.createPaginationItem(totalCount, itemsPerPage,
                                         pagePerSection, page);
 
                         // 성공 응답 반환
                         return BoardListResponseDTO.success(totalCount, boardDetailResponseItems, categoriesItems,
-                                        paginationDto,
+                                        paginationItem,
                                         regDateStart, regDateEnd, keyword, categoryId);
 
                 } catch (DataAccessException e) {

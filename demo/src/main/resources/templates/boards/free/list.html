@@ -73,28 +73,28 @@
         <a class="btn btn-outline-primary" th:href="@{/boards/free/list(page=1, regDateStart=${dto.regDateStart}, regDateEnd=${dto.regDateEnd}, categoryName=${dto.categoryName}, keyword=${dto.keyword})}">«</a>
 
         <!-- ‹ -->
-        <span th:if="${dto.paginationDto.currentSection != 1}">
-            <a class="btn btn-outline-primary" th:href="@{/boards/free/list(page=${dto.paginationDto.currentSectionPageBegin - 1}, regDateStart=${dto.regDateStart}, regDateEnd=${dto.regDateEnd}, categoryName=${dto.categoryName}, keyword=${dto.keyword})}">
+        <span th:if="${dto.paginationItem.currentSection != 1}">
+            <a class="btn btn-outline-primary" th:href="@{/boards/free/list(page=${dto.paginationItem.currentSectionPageBegin - 1}, regDateStart=${dto.regDateStart}, regDateEnd=${dto.regDateEnd}, categoryName=${dto.categoryName}, keyword=${dto.keyword})}">
                 ‹
             </a>
         </span>
   
         <!-- 숫자 -->
-        <span th:each="i : ${#numbers.sequence(dto.paginationDto.currentSectionPageBegin, dto.paginationDto.currentSectionPageEnd)}">
-            <span th:if="${i == dto.paginationDto.currentPage}" th:text="${i}" class="btn btn-primary"></span>
-            <a th:if="${i != dto.paginationDto.currentPage}" th:href="@{/boards/free/list(page=${i}, regDateStart=${dto.regDateStart}, regDateEnd=${dto.regDateEnd}, categoryName=${dto.categoryName}, keyword=${dto.keyword})}" th:text="${i}" class="btn btn-outline-primary"></a>
+        <span th:each="i : ${#numbers.sequence(dto.paginationItem.currentSectionPageBegin, dto.paginationItem.currentSectionPageEnd)}">
+            <span th:if="${i == dto.paginationItem.currentPage}" th:text="${i}" class="btn btn-primary"></span>
+            <a th:if="${i != dto.paginationItem.currentPage}" th:href="@{/boards/free/list(page=${i}, regDateStart=${dto.regDateStart}, regDateEnd=${dto.regDateEnd}, categoryName=${dto.categoryName}, keyword=${dto.keyword})}" th:text="${i}" class="btn btn-outline-primary"></a>
         </span>
 
         <!-- › -->
   
-        <span th:if="${dto.paginationDto.currentSection != dto.paginationDto.totalSection}">
-            <a class="btn btn-outline-primary" th:href="@{/boards/free/list(page=${dto.paginationDto.currentSectionPageEnd + 1}, regDateStart=${dto.regDateStart}, regDateEnd=${dto.regDateEnd}, categoryName=${dto.categoryName}, keyword=${dto.keyword})}">
+        <span th:if="${dto.paginationItem.currentSection != dto.paginationItem.totalSection}">
+            <a class="btn btn-outline-primary" th:href="@{/boards/free/list(page=${dto.paginationItem.currentSectionPageEnd + 1}, regDateStart=${dto.regDateStart}, regDateEnd=${dto.regDateEnd}, categoryName=${dto.categoryName}, keyword=${dto.keyword})}">
                 ›
             </a>
         </span>
         
         <!-- » -->
-        <a class="btn btn-outline-primary" th:href="@{/boards/free/list(page=${dto.paginationDto.totalPage}, regDateStart=${dto.regDateStart}, regDateEnd=${dto.regDateEnd}, categoryName=${dto.categoryName}, keyword=${dto.keyword})}" >»</a>
+        <a class="btn btn-outline-primary" th:href="@{/boards/free/list(page=${dto.paginationItem.totalPage}, regDateStart=${dto.regDateStart}, regDateEnd=${dto.regDateEnd}, categoryName=${dto.categoryName}, keyword=${dto.keyword})}" >»</a>
     </div>
     <div class="d-flex justify-content-end mt-4">
         <button type="button" class="btn btn-success" onclick="window.location.href='/boards/free/write'">등록</button>

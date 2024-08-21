@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-areas:
+        "sidebar header header"
+        "sidebar content content"
+        "sidebar footer footer";
+      grid-template-columns: auto 5fr 1fr;
+      grid-template-rows: 100px 1fr 50px;
+      gap: 10px;
+      height: 100vh;
+    }
+
+    .header {
+      grid-area: header;
+      background-color: lightblue;
+    }
+
+    .sidebar {
+      grid-area: sidebar;
+      background-color: lightcoral;
+      min-width: 150px; /* 최소 너비 */
+      position: relative;
+    }
+
+    .content {
+      grid-area: content;
+      background-color: lightgreen;
+    }
+
+    .footer {
+      grid-area: footer;
+      background-color: lightgrey;
+    }
+
+    .grid-item {
+      padding: 20px;
+      border: 1px solid black;
+      text-align: center;
+    }
+
+    /* Resizer 스타일 */
+    .resizer {
+      width: 5px;
+      cursor: ew-resize;
+      background-color: #746565;
+      position: absolute;
+      height: 100%;
+      right: 0;
+      top: 0;
+      z-index: 1;
+    }
+  </style>
+  <title>Resizable Sidebar Example</title>
+</head>
+<body>
+  <div class="grid-container">
+    <div class="grid-item sidebar" id="sidebar">
+      Sidebar
+      <div class="resizer" id="resizer"></div>
+    </div>
+    <div class="grid-item header">Header</div>
+    <div class="grid-item content">Content</div>
+    <div class="grid-item footer">Footer</div>
+  </div>
+
+  <script>
+    const resizer = document.getElementById('resizer');
+    const sidebar = document.getElementById('sidebar');
+    let isResizing = false;
+
+    resizer.addEventListener('mousedown', (e) => {
+      //e.preventDefault();
+      isResizing = true;
+      document.addEventListener('mousemove', resizeSidebar);
+      document.addEventListener('mouseup', stopResizing);
+    });
+
+    function resizeSidebar(e) {
+      if (isResizing) {
+        const newWidth = e.clientX - sidebar.getBoundingClientRect().left;
+        sidebar.style.width = `${Math.max(150, Math.min(newWidth, 500))}px`; // 최소 150px, 최대 300px
+      }
+    }
+
+    function stopResizing() {
+      isResizing = false;
+      document.removeEventListener('mousemove', resizeSidebar);
+      document.removeEventListener('mouseup', stopResizing);
+    }
+  </script>
+</body>
+</html>
