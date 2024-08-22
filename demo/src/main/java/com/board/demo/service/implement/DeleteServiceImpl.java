@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.board.demo.dto.request.delete.BoardDeleteRequestDTO;
+import com.board.demo.exception.PasswordNotMatchException;
 import com.board.demo.listener.FileDeleteEvent;
 import com.board.demo.mapper.BoardDeleteMapper;
 import com.board.demo.service.DeleteService;
@@ -38,8 +39,7 @@ public class DeleteServiceImpl implements DeleteService {
 
         if (!password.equals(foundPassword)) {
             // 비밀번호 불일치 로직
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Unauthorized: Incorrect password");
+            throw new PasswordNotMatchException();
         }
 
         List<Path> pathsToDelete = mapper.getAllDirsByBoardId(boardId).stream()

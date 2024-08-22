@@ -5,6 +5,7 @@ enum ResponseCode {
 
     // HTTP STATUS 400
     VALIDATION_FAILED = "VF",
+    WRONG_PASSWORD = "WP",
 
     // HTTP STATUS 500
     DATABASE_ERROR = "DBE"

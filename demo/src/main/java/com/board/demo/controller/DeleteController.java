@@ -1,7 +1,7 @@
 package com.board.demo.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +19,7 @@ public class DeleteController {
         this.boardDeleteService = boardDeleteService;
     }
 
-    @PostMapping
+    @DeleteMapping
     public ResponseEntity<?> getDeleteForm(@RequestBody BoardDeleteRequestDTO boardDeleteRequestDTO) {
 
         return boardDeleteService.deleteBoard(boardDeleteRequestDTO);

@@ -37,8 +37,8 @@ public class GlobalControllerAdvice {
 
         log.warn("게시글의 비밀번호가 일치하지 않습니다.");
         ResponseDTO body = ResponseDTO.builder()
-                .code(ResponseCode.FORMAT_ERROR)
-                .message(ResponseMessage.FORMAT_ERROR)
+                .code(ResponseCode.WRONG_PASSWORD)
+                .message(ResponseMessage.WRONG_PASSWORD)
                 .build();
 
         return ResponseEntity.badRequest().body(body);

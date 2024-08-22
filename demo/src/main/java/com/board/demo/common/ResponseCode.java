@@ -7,6 +7,7 @@ public interface ResponseCode {
 
     // HTTP Status Code 400
     String FORMAT_ERROR = "FE";
+    String WRONG_PASSWORD = "WP";
 
     // HTTP Status Code 500
     String DATABASE_ERROR = "DBE";

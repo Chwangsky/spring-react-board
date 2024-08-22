@@ -5,19 +5,23 @@ import {
   useRef,
   useState,
 } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { redirect, useNavigate, useParams } from "react-router-dom";
 import BoardDetailItem from "../../types/interface/board-detail-item.interface";
 import commentItem from "../../types/interface/comment-item.interface";
 import FileItem from "../../types/interface/file-item.interface";
-import { getBoardDetailRequest, postCommentRequest } from "../../apis";
+import {
+  deleteRequest,
+  getBoardDetailRequest,
+  postCommentRequest,
+} from "../../apis";
 import {
   BoardDetailResponseDTO,
   PostCommentResponseDTO,
 } from "../../apis/response/detail";
 import ResponseDTO from "../../apis/response/response.dto";
 import { formatDate } from "../../util/formatDate";
-import PostCommentRequestDTO from "../../apis/request/post-comment.request.dto";
-import { LIST_PATH, READ_PATH } from "../../constant";
+import { LIST_PATH, MODIFY_PATH, READ_PATH } from "../../constant";
+import { DeleteRequestDTO, PostCommentRequestDTO } from "../../apis/request";
 
 const BoardDetail = () => {
   const { boardId } = useParams();
@@ -28,13 +32,19 @@ const BoardDetail = () => {
   const [commentWriter, setCommentWriter] = useState<string>("");
   const [commentContent, setCommentContent] = useState<string>("");
 
-  // 댓글 작성자칸 참조 상태
+  // ref: 댓글 작성자칸 참조 상태
   const commentWriterRef = useRef<HTMLTextAreaElement | null>(null);
 
-  // 댓글 내용 참조상태
+  // ref: 댓글 내용 참조상태
   const commentContentRef = useRef<HTMLTextAreaElement | null>(null);
 
-  //
+  // 모달창 상태
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
+
+  // ref: 모달창의 비밀번호 참조상태
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+
+  // 네비게이션 함수
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -72,13 +82,10 @@ const BoardDetail = () => {
 
   // function: 제출 버튼 클릭시 실행할 함수
   const onCommentSubmitButtonClickHandler = () => {
-    // validation check TODO
+    // TODO validation check
 
     const writer = commentWriterRef.current?.value;
     const content = commentContentRef.current?.value;
-    console.log(content);
-    console.log(writer);
-    console.log(boardId);
 
     if (!writer) return;
     if (!boardId) return;
@@ -104,7 +111,75 @@ const BoardDetail = () => {
     if (code !== "SU") return;
 
     const { boardId } = responseBody as PostCommentResponseDTO;
-    navigate(READ_PATH(String(boardId)));
+    console.log(READ_PATH(String(boardId))); // /boards/free/views/123 and my http://localhost:3000/boards/free/views/123
+    // make redi
+    navigate(0);
+  };
+
+  const onDeleteButtonClickHandler = () => {
+    setModalVisible(true);
+  };
+
+  const onDeleteConfirmButtonClickhandler = () => {
+    if (!passwordRef.current) return;
+    const { value } = passwordRef.current;
+    const password = value;
+    const numBoardId = Number(boardId);
+    const requestBody: DeleteRequestDTO = {
+      boardId: numBoardId,
+      password,
+    };
+    console.log(requestBody);
+    deleteRequest(requestBody).then(deleteResponse);
+  };
+
+  const deleteResponse = (result: ResponseDTO | null) => {
+    if (!result) return;
+    const { code } = result;
+    if (code === "DBE") alert("데이터베이스 오류입니다.");
+    if (code === "WP") alert("비밀번호가 일치하지 않습니다.");
+    if (code !== "SU") return;
+    navigate(LIST_PATH());
+  };
+
+  // component: 모달창 컴포넌트 //
+  const Modal = () => {
+    return (
+      <>
+        {/* 모달 오버레이 */}
+        {isModalVisible && (
+          <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+              <p className="mb-4">
+                <label
+                  className="text-xl font-semibold mr-10"
+                  htmlFor="password"
+                >
+                  비밀번호
+                </label>
+                <input
+                  ref={passwordRef}
+                  id="password"
+                  type="text"
+                  placeholder="비밀번호를 입력해 주세요"
+                />
+              </p>
+              <div className="flex justify-end space-x-4">
+                <button
+                  onClick={() => setModalVisible(false)}
+                  className="bg-red-300 text-black px-4 py-2 rounded hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                >
+                  취소
+                </button>
+                <button onClick={onDeleteConfirmButtonClickhandler}>
+                  확인
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+    );
   };
 
   return (
@@ -145,7 +220,7 @@ const BoardDetail = () => {
           </div>
 
           <div className="border-t border-gray-500"></div>
-          <div className="text-gray-800">
+          <div className="text-gray-800 p-10">
             <p>{boardDetailItem.content}</p>
           </div>
         </div>
@@ -173,6 +248,7 @@ const BoardDetail = () => {
         </div>
       )}
 
+      {/* 댓글 박스 */}
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">댓글</h2>
         {commentItems.map((comment: commentItem) => (
@@ -180,32 +256,65 @@ const BoardDetail = () => {
             key={comment.commentId}
             className="border-b border-gray-200 pb-4 mb-4"
           >
-            <div className="text-gray-800 font-medium">{comment.writer}</div>
+            <div className="text-gray-800 font-medium h-20">
+              {comment.writer}
+            </div>
             <div className="text-gray-600 text-sm mb-2">
               {formatDate(comment.regDate)}
             </div>
             <div className="text-gray-800">{comment.content}</div>
           </div>
         ))}
-        <div>
-          <textarea
-            ref={commentWriterRef}
-            maxLength={4}
-            className="p-2.5 w-20 h-1 resize-none overflow-hidden h-10"
-            placeholder="작성자"
-            defaultValue={"익게이"}
-          ></textarea>
-          <div className="flex flex-row ">
+        {/* 댓글 입력 창 */}
+        {/* 댓글 입력 창 */}
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="mb-4">
+            <textarea
+              ref={commentWriterRef}
+              maxLength={4}
+              className="p-2.5 w-40 h-10 resize-none overflow-hidden border border-gray-300 rounded"
+              placeholder="작성자"
+              defaultValue={"익게이"}
+            ></textarea>
+          </div>
+          <div className="flex flex-row items-start space-x-4">
             <textarea
               ref={commentContentRef}
               onChange={onCommentContentChangeHandler}
-              className="p-2.5 w-full resize-none overflow-hidden "
+              className="p-2.5 w-full h-24 resize-none border border-gray-300 rounded"
               placeholder="댓글을 입력해 주세요."
             ></textarea>
-            <button onClick={onCommentSubmitButtonClickHandler}>등록</button>
+            <button
+              onClick={onCommentSubmitButtonClickHandler}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
+            >
+              등록
+            </button>
           </div>
         </div>
       </div>
+
+      <div className="flex justify-center  space-x-4 mt-6">
+        <button
+          onClick={() => navigate(LIST_PATH())}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          목록
+        </button>
+        <button
+          onClick={() => navigate(MODIFY_PATH(String(boardId)))}
+          className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+        >
+          수정
+        </button>
+        <button
+          onClick={onDeleteButtonClickHandler}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+        >
+          삭제
+        </button>
+      </div>
+      <Modal />
     </div>
   );
 };

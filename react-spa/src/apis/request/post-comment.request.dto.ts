@@ -1,4 +1,4 @@
-export default interface PostCommentRequestDTO {
+export interface PostCommentRequestDTO {
     boardId: number;
     writer: string;
     content: string;
