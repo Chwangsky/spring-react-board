@@ -14,6 +14,7 @@ public class BoardDetailEntity {
     private int boardId;
     private String category;
     private String title;
+    private String writer;
     private String content;
     private LocalDateTime regDate;
     private LocalDateTime updateDate;

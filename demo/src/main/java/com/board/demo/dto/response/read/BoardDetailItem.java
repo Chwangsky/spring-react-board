@@ -11,6 +11,7 @@ public class BoardDetailItem {
     private Integer boardId;
     private String category;
     private String title;
+    private String writer;
     private String content;
     private LocalDateTime regDate;
     private LocalDateTime updateDate;

@@ -28,6 +28,7 @@ public class BoardReadResponseDTO extends ResponseDTO {
                                 .boardId(boardDetailEntity.getBoardId())
                                 .category(boardDetailEntity.getCategory())
                                 .title(boardDetailEntity.getTitle())
+                                .writer(boardDetailEntity.getWriter())
                                 .content(boardDetailEntity.getContent())
                                 .regDate(boardDetailEntity.getRegDate())
                                 .updateDate(boardDetailEntity.getUpdateDate())

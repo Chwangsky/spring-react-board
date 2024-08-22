@@ -14,7 +14,9 @@ public interface BoardReadMapper {
 
         @Select("SELECT b.board_id AS boardId, "
                         + "(SELECT c.name FROM category c WHERE c.category_id = b.category_id) AS category, "
-                        + "b.title AS title, " + "b.content AS content, "
+                        + "b.title AS title, "
+                        + "b.writer AS writer, "
+                        + "b.content AS content, "
                         + "b.reg_date AS regDate, " + "b.update_date AS updateDate "
                         + "FROM board b " + "WHERE b.board_id = #{boardId}")
         BoardDetailEntity selectBoardDetailById(int boardId);
