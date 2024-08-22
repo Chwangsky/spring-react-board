@@ -18,55 +18,55 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 public class BoardReadResponseDTO extends ResponseDTO {
-    private BoardItem boardItem;
-    private List<CommentItem> commentItems;
-    private List<FileItem> fileItems;
+        private BoardDetailItem boardDetailItem;
+        private List<CommentItem> commentItems;
+        private List<FileItem> fileItems;
 
-    private static BoardReadResponseDTO fromEntities(BoardDetailEntity boardDetailEntity,
-            List<CommentEntity> commentEntities, List<FileEntity> fileEntities) {
-        BoardItem boardItem = BoardItem.builder()
-                .boardId(boardDetailEntity.getBoardId())
-                .category(boardDetailEntity.getCategory())
-                .title(boardDetailEntity.getTitle())
-                .content(boardDetailEntity.getContent())
-                .regDate(boardDetailEntity.getRegDate())
-                .updateDate(boardDetailEntity.getUpdateDate())
-                .build();
+        private static BoardReadResponseDTO fromEntities(BoardDetailEntity boardDetailEntity,
+                        List<CommentEntity> commentEntities, List<FileEntity> fileEntities) {
+                BoardDetailItem boardDetailItem = BoardDetailItem.builder()
+                                .boardId(boardDetailEntity.getBoardId())
+                                .category(boardDetailEntity.getCategory())
+                                .title(boardDetailEntity.getTitle())
+                                .content(boardDetailEntity.getContent())
+                                .regDate(boardDetailEntity.getRegDate())
+                                .updateDate(boardDetailEntity.getUpdateDate())
+                                .build();
 
-        List<CommentItem> commentItems = commentEntities.stream()
-                .map(comment -> CommentItem.builder()
-                        .commentId(comment.getCommentId())
-                        .content(comment.getContent())
-                        .writer(comment.getWriter())
-                        .regDate(comment.getRegDate())
-                        .build())
-                .collect(Collectors.toList());
+                List<CommentItem> commentItems = commentEntities.stream()
+                                .map(comment -> CommentItem.builder()
+                                                .commentId(comment.getCommentId())
+                                                .content(comment.getContent())
+                                                .writer(comment.getWriter())
+                                                .regDate(comment.getRegDate())
+                                                .build())
+                                .collect(Collectors.toList());
 
-        List<FileItem> fileItems = fileEntities.stream()
-                .map((FileEntity file) -> FileItem.builder()
-                        .fileId(file.getFileId())
-                        .attachType(file.getAttachType())
-                        .byteSize(file.getByteSize())
-                        .uuidName(file.getUuidName())
-                        .orgName(file.getOrgName())
-                        .fileDir(file.getFileDir())
-                        .build())
-                .collect(Collectors.toList());
+                List<FileItem> fileItems = fileEntities.stream()
+                                .map((FileEntity file) -> FileItem.builder()
+                                                .fileId(file.getFileId())
+                                                .attachType(file.getAttachType())
+                                                .byteSize(file.getByteSize())
+                                                .uuidName(file.getUuidName())
+                                                .orgName(file.getOrgName())
+                                                .fileDir(file.getFileDir())
+                                                .build())
+                                .collect(Collectors.toList());
 
-        return BoardReadResponseDTO.builder()
-                .boardItem(boardItem)
-                .commentItems(commentItems)
-                .fileItems(fileItems)
-                .code(ResponseCode.SUCCESS) // ??
-                .message(ResponseMessage.SUCCESS) // ??
-                .build();
-    }
+                return BoardReadResponseDTO.builder()
+                                .boardDetailItem(boardDetailItem)
+                                .commentItems(commentItems)
+                                .fileItems(fileItems)
+                                .code(ResponseCode.SUCCESS)
+                                .message(ResponseMessage.SUCCESS)
+                                .build();
+        }
 
-    public static ResponseEntity<BoardReadResponseDTO> success(BoardDetailEntity boardDetailEntity,
-            List<CommentEntity> commentEntities, List<FileEntity> fileEntities) {
-        BoardReadResponseDTO result = BoardReadResponseDTO
-                .fromEntities(boardDetailEntity, commentEntities, fileEntities);
+        public static ResponseEntity<BoardReadResponseDTO> success(BoardDetailEntity boardDetailEntity,
+                        List<CommentEntity> commentEntities, List<FileEntity> fileEntities) {
+                BoardReadResponseDTO result = BoardReadResponseDTO
+                                .fromEntities(boardDetailEntity, commentEntities, fileEntities);
 
-        return ResponseEntity.ok().body(result);
-    }
+                return ResponseEntity.ok().body(result);
+        }
 }

@@ -1,6 +1,6 @@
 import { BoardListItem, CategoryIdNameItem } from "../../../types/interface";
 import ResponseDTO from "../response.dto";
-import PaginationItem from "./pagination.dto";
+import PaginationItem from "../../../types/interface/pagination-item";
 
 export default interface BoardListResponseDTO extends ResponseDTO {
     totalCount: number;

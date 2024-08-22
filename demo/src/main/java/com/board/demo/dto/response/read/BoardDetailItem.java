@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class BoardItem {
+public class BoardDetailItem {
     private Integer boardId;
     private String category;
     private String title;

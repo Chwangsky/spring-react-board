@@ -5,11 +5,17 @@ import { BoardListResponseDTO } from "../../apis/response/list";
 import { BoardListRequestDTO } from "../../apis/request";
 import ResponseDTO from "../../apis/response/response.dto";
 import { BoardListItem, CategoryIdNameItem } from "../../types/interface";
-import PaginationItem from "../../apis/response/list/pagination.dto";
+import PaginationItem from "../../types/interface/pagination-item";
 import { Pagination } from "../../components/Pagination";
+import { formatDate } from "../../util/formatDate";
+import { useNavigate } from "react-router-dom";
+import { READ_PATH } from "../../constant";
+import { FaPaperclip } from "react-icons/fa6";
 
 const BoardList = () => {
   const now = dayjs();
+
+  const navigate = useNavigate();
 
   // 상태 정의
   const [regDateStart, setRegDateStart] = useState<string>(
@@ -46,7 +52,7 @@ const BoardList = () => {
   // effect: 컴포넌트 초기화 시 데이터를 한 번만 로드
   useEffect(() => {
     loadBoardList();
-  }, []);
+  }, [loadBoardList]);
 
   useEffect(() => {
     if (page !== 1) {
@@ -94,6 +100,17 @@ const BoardList = () => {
 
   const handlePageChange = (page: number) => {
     setPage(page);
+    loadBoardList();
+  };
+
+  const truncateTitle = (title: string) => {
+    if (title.length > 80) title = title.substring(0, 80) + "...";
+    return title;
+  };
+
+  const changeToClip = (fileCount: number) => {
+    if (fileCount === 0) return;
+    else return <FaPaperclip />;
   };
 
   return (
@@ -101,9 +118,9 @@ const BoardList = () => {
       <h1 className="text-2xl font-bold mb-4">자유게시판 - 목록</h1>
 
       {/* 검색 필터 */}
-      <div className="space-y-4 mb-8">
+      <div className="flex flex-row items-center space-y-4 mb-8">
         <div className="flex items-center space-x-4">
-          <label className="font-medium">등록일 시작:</label>
+          <label className="font-medium">등록일:</label>
           <input
             type="date"
             value={regDateStart}
@@ -111,9 +128,8 @@ const BoardList = () => {
             className="border rounded px-4 py-2"
           />
         </div>
-
-        <div className="flex items-center space-x-4">
-          <label className="font-medium">등록일 끝:</label>
+        ~
+        <div className="flex items-center space-x-4 pr-4">
           <input
             type="date"
             value={regDateEnd}
@@ -121,7 +137,6 @@ const BoardList = () => {
             className="border rounded px-4 py-2"
           />
         </div>
-
         <div className="flex items-center space-x-4">
           <label className="font-medium">카테고리:</label>
           <select
@@ -139,7 +154,6 @@ const BoardList = () => {
             ))}
           </select>
         </div>
-
         <div className="flex items-center space-x-4">
           <label className="font-medium">검색어:</label>
           <input
@@ -149,7 +163,6 @@ const BoardList = () => {
             className="border rounded px-4 py-2"
           />
         </div>
-
         <button
           onClick={onSearchButtonClickHandler}
           className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
@@ -158,37 +171,51 @@ const BoardList = () => {
         </button>
       </div>
 
+      <div>총 {totalCount} 건</div>
+
       {/* 게시글 목록 섹션 */}
-      <div className="board-list-section">
-        <h2 className="text-xl font-bold mb-4">게시글 목록</h2>
-        {boardListItems.length === 0 ? (
-          <p>게시글이 없습니다.</p>
-        ) : (
-          <ul className="space-y-4">
+      <div>
+        <table className="board-list-section min-w-full divide-y divide-gray-500 overflow-hidden">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="text-center w-10">카테고리</th>
+              {/* 첨부파일 */}
+              <th className="text-center w-10"></th>
+
+              <th className="text-center w-60">제목</th>
+              <th className="text-center w-8">작성자</th>
+              <th className="text-center w-8">조회수</th>
+              <th className="text-center w-12">등록 일시</th>
+              <th className="text-center w-12">수정 일시</th>
+            </tr>
+          </thead>
+          <tbody>
             {boardListItems.map((item) => (
-              <li
-                key={item.boardId}
-                className="border rounded-lg p-4 bg-white shadow hover:shadow-lg transition-shadow duration-300"
-              >
-                <div className="flex justify-between items-center mb-2">
-                  <strong className="text-lg">{item.category}</strong>
-                  <small className="text-gray-500">{item.regDate}</small>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <div className="text-sm text-gray-600">
-                  <span className="mr-4">작성자: {item.writer}</span>
-                  <span className="mr-4">조회수: {item.views}</span>
-                  <span>파일 수: {item.fileCount}</span>
-                </div>
-              </li>
+              <tr key={item.boardId}>
+                <td className="text-center">{item.category}</td>
+                <td className="text-center">{changeToClip(item.fileCount)}</td>
+                <td
+                  className="text-center hover:text-blue-500 hover:underline cursor-pointer"
+                  onClick={() => navigate(READ_PATH(String(item.boardId)))}
+                >
+                  {truncateTitle(item.title)}
+                </td>
+                <td className="text-center">{item.writer}</td>
+                <td className="text-center">{item.views}</td>
+                <td className="text-center">{formatDate(item.regDate)}</td>
+                <td className="text-center">{formatDate(item.regDate)}</td>
+              </tr>
             ))}
-          </ul>
-        )}
+          </tbody>
+        </table>
       </div>
 
       {/* 페이지네이션 */}
       {paginationItem && (
-        <Pagination {...paginationItem} onPageChange={handlePageChange} />
+        <Pagination
+          {...paginationItem}
+          onPageButtonClickHnalder={handlePageChange}
+        />
       )}
     </>
   );

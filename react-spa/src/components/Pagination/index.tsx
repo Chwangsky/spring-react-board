@@ -1,5 +1,5 @@
 import React from "react";
-import PaginationItem from "../../apis/response/list/pagination.dto";
+import PaginationItem from "../../types/interface/pagination-item";
 import {
   FaAngleDoubleLeft,
   FaAngleDoubleRight,
@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 
 interface PaginationProps extends PaginationItem {
-  onPageChange: (page: number) => void;
+  onPageButtonClickHnalder: (page: number) => void;
 }
 
 export const Pagination = (props: PaginationProps) => {
@@ -17,10 +17,10 @@ export const Pagination = (props: PaginationProps) => {
     currentPage,
     currentSectionPageBegin,
     currentSectionPageEnd,
-    onPageChange,
+    onPageButtonClickHnalder,
   } = props;
 
-  const pageNumbers = [];
+  const pageNumbers: number[] = [];
 
   // 현재 섹션의 시작 페이지부터 끝 페이지까지의 숫자를 배열에 추가
   for (let i = currentSectionPageBegin; i <= currentSectionPageEnd; i++) {
@@ -30,18 +30,21 @@ export const Pagination = (props: PaginationProps) => {
 
   const onLeftButtonClickHandler = () => {
     if (currentSectionPageBegin === 1) return;
-    onPageChange(currentSectionPageBegin - 1);
+    onPageButtonClickHnalder(currentSectionPageBegin - 1);
   };
 
   const onRightButtonClickHandler = () => {
     if (currentSectionPageEnd === totalPage) return;
-    onPageChange(currentSectionPageEnd + 1);
+    onPageButtonClickHnalder(currentSectionPageEnd + 1);
   };
 
   return (
-    <div className="pagination">
+    <div className="pagination flex flex-row">
       {/* << 버튼*/}
-      <button disabled={currentPage === 1} onClick={() => onPageChange(1)}>
+      <button
+        disabled={currentPage === 1}
+        onClick={() => onPageButtonClickHnalder(1)}
+      >
         <FaAngleDoubleLeft />
       </button>
 
@@ -52,13 +55,18 @@ export const Pagination = (props: PaginationProps) => {
 
       {/* 페이지 숫자 버튼들 */}
       {pageNumbers.map((pageNumber) => (
-        <button
-          key={pageNumber}
-          onClick={() => onPageChange(pageNumber)}
-          className={pageNumber === currentPage ? "active" : ""}
-        >
-          {pageNumber}
-        </button>
+        <>
+          <button
+            key={pageNumber}
+            onClick={() => onPageButtonClickHnalder(pageNumber)}
+            className={pageNumber === currentPage ? "underline" : "active"}
+          >
+            {pageNumber}
+          </button>
+          {pageNumber !== pageNumbers[pageNumbers.length - 1] && (
+            <div className="px-2">|</div>
+          )}
+        </>
       ))}
 
       {/* > 버튼*/}
@@ -69,10 +77,10 @@ export const Pagination = (props: PaginationProps) => {
         <FaAngleRight />
       </button>
 
-      {/* >> 버튼*/}
+      {/* >> 버튼 흥*/}
       <button
         disabled={currentSectionPageEnd === totalPage}
-        onClick={() => onPageChange(totalPage)}
+        onClick={() => onPageButtonClickHnalder(totalPage)}
       >
         <FaAngleDoubleRight />
       </button>
