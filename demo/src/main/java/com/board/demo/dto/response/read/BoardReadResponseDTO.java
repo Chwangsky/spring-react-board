@@ -32,6 +32,7 @@ public class BoardReadResponseDTO extends ResponseDTO {
                                 .content(boardDetailEntity.getContent())
                                 .regDate(boardDetailEntity.getRegDate())
                                 .updateDate(boardDetailEntity.getUpdateDate())
+                                .views(boardDetailEntity.getViews())
                                 .build();
 
                 List<CommentItem> commentItems = commentEntities.stream()

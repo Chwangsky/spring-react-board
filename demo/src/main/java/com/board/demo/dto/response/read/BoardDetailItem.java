@@ -15,5 +15,6 @@ public class BoardDetailItem {
     private String content;
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
+    private Integer views;
 
 }

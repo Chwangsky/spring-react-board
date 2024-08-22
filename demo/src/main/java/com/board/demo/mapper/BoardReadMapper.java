@@ -17,6 +17,7 @@ public interface BoardReadMapper {
                         + "b.title AS title, "
                         + "b.writer AS writer, "
                         + "b.content AS content, "
+                        + "b.views AS views, "
                         + "b.reg_date AS regDate, " + "b.update_date AS updateDate "
                         + "FROM board b " + "WHERE b.board_id = #{boardId}")
         BoardDetailEntity selectBoardDetailById(int boardId);

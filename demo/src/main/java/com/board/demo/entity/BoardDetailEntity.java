@@ -11,11 +11,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardDetailEntity {
-    private int boardId;
+    private Integer boardId;
     private String category;
     private String title;
     private String writer;
     private String content;
+    private Integer views;
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
 }

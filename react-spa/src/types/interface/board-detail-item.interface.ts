@@ -7,4 +7,5 @@ export default interface BoardDetailItem {
     content: string;
     regDate: string;
     updateDate: string;
+    views: number;
 }
