@@ -6,9 +6,6 @@ import {
   useState,
 } from "react";
 import { redirect, useNavigate, useParams } from "react-router-dom";
-import BoardDetailItem from "../../types/interface/board-detail-item.interface";
-import commentItem from "../../types/interface/comment-item.interface";
-import FileItem from "../../types/interface/file-item.interface";
 import {
   deleteRequest,
   getBoardDetailRequest,
@@ -22,12 +19,13 @@ import ResponseDTO from "../../apis/response/response.dto";
 import { formatDate } from "../../util/formatDate";
 import { LIST_PATH, MODIFY_PATH, READ_PATH } from "../../constant";
 import { DeleteRequestDTO, PostCommentRequestDTO } from "../../apis/request";
+import { BoardDetailItem, CommentItem, FileItem } from "../../types/interface";
 
 const BoardDetail = () => {
   const { boardId } = useParams();
   const [boardDetailItem, setBoardDetailItem] = useState<BoardDetailItem>();
   const [fileItems, setFileItems] = useState<FileItem[]>([]);
-  const [commentItems, setCommentItems] = useState<commentItem[]>([]);
+  const [commentItems, setCommentItems] = useState<CommentItem[]>([]);
 
   const [commentWriter, setCommentWriter] = useState<string>("");
   const [commentContent, setCommentContent] = useState<string>("");
@@ -251,7 +249,7 @@ const BoardDetail = () => {
       {/* 댓글 박스 */}
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">댓글</h2>
-        {commentItems.map((comment: commentItem) => (
+        {commentItems.map((comment: CommentItem) => (
           <div
             key={comment.commentId}
             className="border-b border-gray-200 pb-4 mb-4"

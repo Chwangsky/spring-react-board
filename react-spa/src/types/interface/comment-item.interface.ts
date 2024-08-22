@@ -1,4 +1,4 @@
-export default interface commentItem {
+export default interface CommentItem {
     commentId: number;
     content: string;
     writer: string;

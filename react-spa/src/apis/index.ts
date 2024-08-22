@@ -3,12 +3,14 @@ import { BoardListResponseDTO } from "./response/list";
 import ResponseDTO from "./response/response.dto";
 import { BoardDetailResponseDTO, PostCommentResponseDTO } from "./response/detail";
 import { BoardListRequestDTO, DeleteRequestDTO, PostCommentRequestDTO } from "./request";
+import { GetBoardWriteResponseDTO } from "./response/write/write-response.dto";
 
 const DOMAIN = 'http://localhost:8080';
 const LIST_URL = () => `${DOMAIN}/boards/free/list`;
 const VIEW_URL = (boardId: number) => `${DOMAIN}/boards/free/views/${boardId}`;
 const COMMENT_URL = () => `${DOMAIN}/boards/free/views`;
-const DELETE_URL = () =>`${DOMAIN}/boards/free/delete`;
+const DELETE_URL = () => `${DOMAIN}/boards/free/delete`;
+const WRITE_URL = () => `${DOMAIN}/boards/free/write`;
 
 export const getBoardListRequest = async (requestBody: BoardListRequestDTO) => {
     const result = await axios.get(LIST_URL(), { params: requestBody })
@@ -68,3 +70,19 @@ export const deleteRequest = async (requestBody: DeleteRequestDTO) => {
     return result;
 }
 
+export const getWriteRequest = async () => {
+    const result = await axios.get(WRITE_URL())
+        .then(
+            response => {
+                const responseBody: GetBoardWriteResponseDTO = response.data;
+                return responseBody;
+            }
+        )
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDTO = error.response.data;
+            return responseBody;
+        })
+    console.log(result);
+    return result;        
+}

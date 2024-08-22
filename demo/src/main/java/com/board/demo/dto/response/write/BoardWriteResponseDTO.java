@@ -16,11 +16,11 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 public class BoardWriteResponseDTO extends ResponseDTO {
-    List<CategoryIdNameItem> categories;
+    List<CategoryIdNameItem> categoryIdNameItems;
 
     private static BoardWriteResponseDTO fromEntities(List<CategoryIdNameEntity> entities) {
         return BoardWriteResponseDTO.builder()
-                .categories(entities.stream()
+                .categoryIdNameItems(entities.stream()
                         .map(entity -> CategoryIdNameItem.builder()
                                 .categoryId(entity.getCategoryId())
                                 .name(entity.getName())

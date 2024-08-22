@@ -26,6 +26,6 @@ public class PostCommentResponseDTO extends ResponseDTO {
     public static ResponseEntity<PostCommentResponseDTO> success(Integer boardId) {
         PostCommentResponseDTO result = PostCommentResponseDTO.fromBoardId(boardId);
         return ResponseEntity.ok().body(result);
-
     }
+
 }
