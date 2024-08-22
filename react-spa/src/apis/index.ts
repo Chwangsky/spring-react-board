@@ -2,8 +2,9 @@ import axios from "axios";
 import { BoardListResponseDTO } from "./response/list";
 import ResponseDTO from "./response/response.dto";
 import { BoardDetailResponseDTO, PostCommentResponseDTO } from "./response/detail";
-import { BoardListRequestDTO, DeleteRequestDTO, PostCommentRequestDTO } from "./request";
+import { BoardListRequestDTO, DeleteRequestDTO, PostBoardRequestDTO, PostCommentRequestDTO } from "./request";
 import { GetBoardWriteResponseDTO } from "./response/write/write-response.dto";
+import { PostBoardResponseDTO } from "./response/write";
 
 const DOMAIN = 'http://localhost:8080';
 const LIST_URL = () => `${DOMAIN}/boards/free/list`;
@@ -85,4 +86,20 @@ export const getWriteRequest = async () => {
         })
     console.log(result);
     return result;        
+}
+
+
+
+export const postBoardRequest = async (requestBody: PostBoardRequestDTO) => {
+    const result = await axios.post(WRITE_URL(), requestBody)
+        .then(response => {
+            const responseBody: PostBoardResponseDTO = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDTO = error.response.data;
+            return responseBody;
+        })
+    return result;
 }

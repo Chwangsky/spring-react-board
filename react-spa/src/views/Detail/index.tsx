@@ -64,7 +64,7 @@ const BoardDetail = () => {
     setCommentItems(commentItems);
   };
 
-  // function: 댓글 상자를 댓글이 많을 수록 길이를 늘려주는 함수
+  // function: 댓글 상자의 길이를 자동으로 맞춰주는 함수
   const onCommentContentChangeHandler: ChangeEventHandler<
     HTMLTextAreaElement
   > = (e: ChangeEvent<HTMLTextAreaElement>) => {

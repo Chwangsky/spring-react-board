@@ -1,10 +1,20 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  ChangeEventHandler,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { getBoardListRequest } from "../../apis";
 import dayjs from "dayjs";
 import { BoardListResponseDTO } from "../../apis/response/list";
 import { BoardListRequestDTO } from "../../apis/request";
 import ResponseDTO from "../../apis/response/response.dto";
-import { BoardListItem, CategoryIdNameItem, PaginationItem } from "../../types/interface";
+import {
+  BoardListItem,
+  CategoryIdNameItem,
+  PaginationItem,
+} from "../../types/interface";
 import { Pagination } from "../../components/Pagination";
 import { formatDate } from "../../util/formatDate";
 import { useNavigate } from "react-router-dom";
@@ -117,8 +127,8 @@ const BoardList = () => {
       <h1 className="text-2xl font-bold mb-4">자유게시판 - 목록</h1>
 
       {/* 검색 필터 */}
-      <div className="flex flex-row items-center space-y-4 mb-8">
-        <div className="flex items-center space-x-4">
+      <div className="flex flex-row items-center  mb-8">
+        <div className="space-x-4">
           <label className="font-medium">등록일:</label>
           <input
             type="date"
