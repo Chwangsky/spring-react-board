@@ -92,7 +92,7 @@ const BoardWrite = () => {
     if (responseBody === null) return;
     const { code } = responseBody;
     if (code === "DBE") alert("데이터베이스 오류입니다.");
-    if (code === "VF") alert("형식 오류입니다.");
+    if (code === "FE") alert("형식 오류입니다.");
     if (code !== "SU") return;
     const { boardId } = responseBody as PostBoardResponseDTO;
     alert("게시글이 등록되었습니다.");

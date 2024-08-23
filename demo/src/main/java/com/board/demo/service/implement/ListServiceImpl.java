@@ -46,10 +46,13 @@ public class ListServiceImpl implements ListService {
                 String keyword = boardListDTO.getKeyword();
                 Integer categoryId = boardListDTO.getCategoryId();
 
+                String regDateEndDay = regDateEnd != null ? regDateEnd + " 23:59:59" : null; // 그 날의 23시59분59초를 검색하기 위한
+                                                                                             // 변수
+
                 try {
 
                         // 데이터베이스에서 게시글 검색
-                        List<BoardSearchEntity> boardSearchEntities = mapper.boardSearch(regDateStart, regDateEnd,
+                        List<BoardSearchEntity> boardSearchEntities = mapper.boardSearch(regDateStart, regDateEndDay,
                                         categoryId,
                                         keyword, itemsPerPage, offset);
 
@@ -58,7 +61,7 @@ public class ListServiceImpl implements ListService {
                                         .collect(Collectors.toList());
 
                         // 전체 카운트 조회
-                        int totalCount = mapper.boardSearchCount(regDateStart, regDateEnd, categoryId, keyword);
+                        int totalCount = mapper.boardSearchCount(regDateStart, regDateEndDay, categoryId, keyword);
 
                         // 카테고리 목록 조회
                         List<CategoryIdNameEntity> categoryEntities = mapper.findAllCategoryIdsAndNames();

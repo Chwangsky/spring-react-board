@@ -4,7 +4,7 @@ enum ResponseCode {
     SUCCESS = "SU",
 
     // HTTP STATUS 400
-    VALIDATION_FAILED = "VF",
+    FORMAT_ERROR = "FE",
     WRONG_PASSWORD = "WP",
 
     // HTTP STATUS 500
