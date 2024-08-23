@@ -7,6 +7,7 @@ import BingoGame from "./views/bingo";
 import BoardDetail from "./views/Detail";
 import BoardList from "./views/List";
 import BoardWrite from "./views/Write";
+import BoardUpdate from "./views/Update";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <Route path={LIST_PATH()} element={<BoardList />} />
         <Route path={READ_PATH(":boardId")} element={<BoardDetail />} />
         <Route path={WRITE_PATH()} element={<BoardWrite />} />
-        <Route path={MODIFY_PATH(":boardId")} />
+        <Route path={MODIFY_PATH(":boardId")} element={<BoardUpdate />} />
         <Route path={"/test"} element={<BingoGame />} />
       </Route>
     </Routes>

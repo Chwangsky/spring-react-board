@@ -9,6 +9,9 @@ public interface ResponseMessage {
     String FORMAT_ERROR = "Format Error.";
     String WRONG_PASSWORD = "Wrong Password.";
 
+    // HTTP Status Code 413
+    String PAYLOAD_TOO_LARGE = "Payload Too Large.";
+
     // HTTP STATUS 500
     String DATABASE_ERROR = "Database error.";
 

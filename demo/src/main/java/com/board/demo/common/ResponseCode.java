@@ -9,6 +9,9 @@ public interface ResponseCode {
     String FORMAT_ERROR = "FE";
     String WRONG_PASSWORD = "WP";
 
+    // HTTP Status Code 413
+    String PAYLOAD_TOO_LARGE = "PTL";
+
     // HTTP Status Code 500
     String DATABASE_ERROR = "DBE";
 }

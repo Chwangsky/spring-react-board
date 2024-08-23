@@ -3,8 +3,6 @@ package com.board.demo.dto.request.write;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -28,7 +26,4 @@ public class BoardPostBoardRequestDTO {
 
     @Size(min = 4, max = 1999, message = "내용의 길이는 4글자 이상, 2000글자 미만입니다.")
     String content;
-
-    MultipartFile[] files;
-
 }

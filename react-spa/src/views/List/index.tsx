@@ -18,7 +18,7 @@ import {
 import { Pagination } from "../../components/Pagination";
 import { formatDate } from "../../util/formatDate";
 import { useNavigate } from "react-router-dom";
-import { READ_PATH } from "../../constant";
+import { READ_PATH, WRITE_PATH } from "../../constant";
 import { FaPaperclip } from "react-icons/fa6";
 
 const BoardList = () => {
@@ -220,12 +220,23 @@ const BoardList = () => {
       </div>
 
       {/* 페이지네이션 */}
-      {paginationItem && (
-        <Pagination
-          {...paginationItem}
-          onPageButtonClickHnalder={handlePageChange}
-        />
-      )}
+      <div className="flex flex-row justify-center">
+        {paginationItem && (
+          <Pagination
+            {...paginationItem}
+            onPageButtonClickHnalder={handlePageChange}
+          />
+        )}
+      </div>
+
+      <div className="flex justify-center space-x-4 mt-6">
+        <button
+          onClick={() => navigate(WRITE_PATH())}
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+          글쓰기
+        </button>
+      </div>
     </>
   );
 };

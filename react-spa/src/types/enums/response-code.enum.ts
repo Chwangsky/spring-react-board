@@ -7,6 +7,9 @@ enum ResponseCode {
     FORMAT_ERROR = "FE",
     WRONG_PASSWORD = "WP",
 
+    // HTTP STATUS 413
+    PAYLOAD_TOO_LARGE = "PTL",
+
     // HTTP STATUS 500
     DATABASE_ERROR = "DBE"
 }

@@ -47,9 +47,7 @@ public class WriteServiceImpl implements WriteService {
 
     @Override
     @Transactional
-    public ResponseEntity<? super PostBoardResponseDTO> postBoard(BoardPostBoardRequestDTO dto) {
-
-        MultipartFile[] parts = dto.getFiles();
+    public ResponseEntity<? super PostBoardResponseDTO> postBoard(BoardPostBoardRequestDTO dto, MultipartFile[] parts) {
 
         BoardCreateEntity boardCreateEntity = BoardCreateEntity.builder()
                 .views(0)
@@ -61,6 +59,7 @@ public class WriteServiceImpl implements WriteService {
                 .build();
 
         Integer boardId = null;
+
         try {
             mapper.insertBoard(boardCreateEntity);
             boardId = boardCreateEntity.getBoardId();

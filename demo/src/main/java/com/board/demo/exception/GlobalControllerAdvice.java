@@ -1,11 +1,13 @@
 package com.board.demo.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.board.demo.common.ResponseCode;
 import com.board.demo.common.ResponseMessage;
@@ -42,5 +44,18 @@ public class GlobalControllerAdvice {
                 .build();
 
         return ResponseEntity.badRequest().body(body);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ResponseDTO> handleMaxSizeException(MaxUploadSizeExceededException ex) {
+
+        ResponseDTO body = ResponseDTO.builder()
+                .code(ResponseCode.PAYLOAD_TOO_LARGE)
+                .message(ResponseMessage.PAYLOAD_TOO_LARGE)
+                .build();
+
+        log.warn("파일 업로드 용량을 초과하였습니다.");
+
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(body);
     }
 }

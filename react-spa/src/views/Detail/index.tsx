@@ -264,7 +264,6 @@ const BoardDetail = () => {
           </div>
         ))}
         {/* 댓글 입력 창 */}
-        {/* 댓글 입력 창 */}
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <div className="mb-4">
             <textarea
@@ -272,7 +271,7 @@ const BoardDetail = () => {
               maxLength={4}
               className="p-2.5 w-40 h-10 resize-none overflow-hidden border border-gray-300 rounded"
               placeholder="작성자"
-              defaultValue={"익게이"}
+              defaultValue={"익명"}
             ></textarea>
           </div>
           <div className="flex flex-row items-start space-x-4">
@@ -292,7 +291,7 @@ const BoardDetail = () => {
         </div>
       </div>
 
-      <div className="flex justify-center  space-x-4 mt-6">
+      <div className="flex justify-center space-x-4 mt-6">
         <button
           onClick={() => navigate(LIST_PATH())}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"

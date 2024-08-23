@@ -2,7 +2,7 @@ import axios from "axios";
 import { BoardListResponseDTO } from "./response/list";
 import ResponseDTO from "./response/response.dto";
 import { BoardDetailResponseDTO, PostCommentResponseDTO } from "./response/detail";
-import { BoardListRequestDTO, DeleteRequestDTO, PostBoardRequestDTO, PostCommentRequestDTO } from "./request";
+import { BoardListRequestDTO, DeleteRequestDTO, PostCommentRequestDTO } from "./request";
 import { GetBoardWriteResponseDTO } from "./response/write/write-response.dto";
 import { PostBoardResponseDTO } from "./response/write";
 
@@ -84,20 +84,20 @@ export const getWriteRequest = async () => {
             const responseBody: ResponseDTO = error.response.data;
             return responseBody;
         })
-    console.log(result);
     return result;        
 }
 
-
-
-export const postBoardRequest = async (requestBody: PostBoardRequestDTO) => {
-    const result = await axios.post(WRITE_URL(), requestBody)
+export const postBoardRequest = async (formData: FormData) => {
+    const result = await axios.post(WRITE_URL(), formData)
         .then(response => {
             const responseBody: PostBoardResponseDTO = response.data;
             return responseBody;
         })
         .catch(error => {
+            console.log(error);
+            console.log('중단점1'); //FIXME  
             if (!error.response) return null;
+            console.log('중단점2'); //FIXME  
             const responseBody: ResponseDTO = error.response.data;
             return responseBody;
         })
