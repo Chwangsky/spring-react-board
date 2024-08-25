@@ -16,6 +16,9 @@ import com.board.demo.entity.FileEntity;
 import com.board.demo.mapper.BoardReadMapper;
 import com.board.demo.service.ReadService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class ReadServiceImpl implements ReadService {
 
@@ -33,6 +36,7 @@ public class ReadServiceImpl implements ReadService {
         try {
             BoardDetailEntity boardDetailEntity = mapper.selectBoardDetailById(boardId);
             List<CommentEntity> commentEntities = mapper.selectCommentsByBoardId(boardId);
+
             List<FileEntity> fileEntities = mapper.selectFilesByBoardId(boardId);
 
             return BoardReadResponseDTO.success(

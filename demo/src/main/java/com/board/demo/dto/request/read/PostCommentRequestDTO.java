@@ -16,7 +16,7 @@ public class PostCommentRequestDTO {
     @NotNull
     Integer boardId;
 
-    @Size(min = 3, max = 4, message = "또틀렸냐")
+    @Size(min = 3, max = 4, message = "작성자의 이름은 3 이상 4 이하이어야 합니다.")
     String writer;
 
     @NotBlank

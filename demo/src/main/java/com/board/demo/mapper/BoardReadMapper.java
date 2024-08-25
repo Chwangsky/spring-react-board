@@ -42,7 +42,7 @@ public interface BoardReadMapper {
         // 댓글 추가하는 메서드
         @Insert("INSERT INTO comments (board_id, content, writer, reg_date) "
                         + "VALUES (#{boardId}, #{content}, #{writer}, NOW())")
-        void insertComment(@Param("boardId") int boardId, @Param("content") String content,
-                        @Param("writer") String writer);
+        void insertComment(@Param("boardId") int boardId,
+                        @Param("writer") String writer, @Param("content") String content);
 
 }

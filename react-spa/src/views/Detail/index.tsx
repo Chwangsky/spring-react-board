@@ -94,6 +94,7 @@ const BoardDetail = () => {
       writer,
       content,
     };
+    console.log(postCommentRequestDto);
 
     postCommentRequest(postCommentRequestDto).then(postCommentResponse);
   };
@@ -251,11 +252,11 @@ const BoardDetail = () => {
             key={comment.commentId}
             className="border-b border-gray-200 pb-4 mb-4"
           >
-            <div className="text-gray-800 font-medium h-20">
-              {comment.writer}
-            </div>
             <div className="text-gray-600 text-sm mb-2">
               {formatDate(comment.regDate)}
+            </div>
+            <div className="text-gray-800 font-medium h-20">
+              {comment.writer}
             </div>
             <div className="text-gray-800">{comment.content}</div>
           </div>
