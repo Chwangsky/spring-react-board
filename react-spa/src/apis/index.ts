@@ -5,6 +5,7 @@ import { BoardDetailResponseDTO, PostCommentResponseDTO } from "./response/detai
 import { BoardListRequestDTO, DeleteRequestDTO, PostCommentRequestDTO } from "./request";
 import { GetBoardWriteResponseDTO } from "./response/write/write-response.dto";
 import { PostBoardResponseDTO } from "./response/write";
+import { GetUpdateResponseDTO, PostUpdateResponseDTO } from "./response/update";
 
 const DOMAIN = 'http://localhost:8080';
 const LIST_URL = () => `${DOMAIN}/boards/free/list`;
@@ -12,6 +13,7 @@ const VIEW_URL = (boardId: number) => `${DOMAIN}/boards/free/views/${boardId}`;
 const COMMENT_URL = () => `${DOMAIN}/boards/free/views`;
 const DELETE_URL = () => `${DOMAIN}/boards/free/delete`;
 const WRITE_URL = () => `${DOMAIN}/boards/free/write`;
+const UPDATE_URL = () => `${DOMAIN}/boards/free/modify`;
 
 export const getBoardListRequest = async (requestBody: BoardListRequestDTO) => {
     const result = await axios.get(LIST_URL(), { params: requestBody })
@@ -94,12 +96,43 @@ export const postBoardRequest = async (formData: FormData) => {
             return responseBody;
         })
         .catch(error => {
-            console.log(error);
-            console.log('중단점1'); //FIXME  
             if (!error.response) return null;
-            console.log('중단점2'); //FIXME  
             const responseBody: ResponseDTO = error.response.data;
             return responseBody;
         })
     return result;
+}
+
+export const getUpdateRequest = async (boardId : number) => {
+    const result = await axios.get(UPDATE_URL(), {
+            params: {
+                boardId,
+            }
+        })
+        .then(
+            response => {
+                const responseBody: GetUpdateResponseDTO = response.data;
+                return responseBody;
+            }
+        )
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDTO = error.response.data;
+            return responseBody;
+        })
+    return result;        
+}
+
+export const postUpdateRequest = async (formData: FormData) => {
+    const result = axios.post(UPDATE_URL(), formData)
+        .then(response => {
+            const responseBody: PostUpdateResponseDTO = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDTO = error.response.data;
+            return responseBody;
+        })
+return result;
 }

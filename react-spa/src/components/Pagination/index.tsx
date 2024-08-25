@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 
 interface PaginationProps extends PaginationItem {
-  onPageButtonClickHnalder: (page: number) => void;
+  onPageButtonClickHandler: (page: number) => void;
 }
 
 export const Pagination = (props: PaginationProps) => {
@@ -17,7 +17,7 @@ export const Pagination = (props: PaginationProps) => {
     currentPage,
     currentSectionPageBegin,
     currentSectionPageEnd,
-    onPageButtonClickHnalder,
+    onPageButtonClickHandler,
   } = props;
 
   const pageNumbers: number[] = [];
@@ -30,12 +30,12 @@ export const Pagination = (props: PaginationProps) => {
 
   const onLeftButtonClickHandler = () => {
     if (currentSectionPageBegin === 1) return;
-    onPageButtonClickHnalder(currentSectionPageBegin - 1);
+    onPageButtonClickHandler(currentSectionPageBegin - 1);
   };
 
   const onRightButtonClickHandler = () => {
     if (currentSectionPageEnd === totalPage) return;
-    onPageButtonClickHnalder(currentSectionPageEnd + 1);
+    onPageButtonClickHandler(currentSectionPageEnd + 1);
   };
 
   return (
@@ -43,7 +43,7 @@ export const Pagination = (props: PaginationProps) => {
       {/* << 버튼*/}
       <button
         disabled={currentPage === 1}
-        onClick={() => onPageButtonClickHnalder(1)}
+        onClick={() => onPageButtonClickHandler(1)}
       >
         <FaAngleDoubleLeft />
       </button>
@@ -55,18 +55,19 @@ export const Pagination = (props: PaginationProps) => {
 
       {/* 페이지 숫자 버튼들 */}
       {pageNumbers.map((pageNumber) => (
-        <>
+        <React.Fragment key={pageNumber}>
           <button
-            key={pageNumber}
-            onClick={() => onPageButtonClickHnalder(pageNumber)}
-            className={pageNumber === currentPage ? "underline" : "active"}
+            onClick={() => onPageButtonClickHandler(pageNumber)}
+            className={
+              pageNumber === currentPage ? "underline disable" : "active"
+            }
           >
             {pageNumber}
           </button>
           {pageNumber !== pageNumbers[pageNumbers.length - 1] && (
             <div className="px-2">|</div>
           )}
-        </>
+        </React.Fragment>
       ))}
 
       {/* > 버튼*/}
@@ -77,10 +78,10 @@ export const Pagination = (props: PaginationProps) => {
         <FaAngleRight />
       </button>
 
-      {/* >> 버튼 흥*/}
+      {/* >> 버튼*/}
       <button
         disabled={currentSectionPageEnd === totalPage}
-        onClick={() => onPageButtonClickHnalder(totalPage)}
+        onClick={() => onPageButtonClickHandler(totalPage)}
       >
         <FaAngleDoubleRight />
       </button>

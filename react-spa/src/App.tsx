@@ -24,4 +24,6 @@ function App() {
   );
 }
 
+// TODO LINT
+
 export default App;

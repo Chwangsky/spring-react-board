@@ -43,7 +43,6 @@ const BoardWrite = () => {
     if (code === "DBE") alert("데이터베이스 에러입니다.");
     if (code !== "SU") return;
     const { categoryIdNameItems } = responseBody as GetBoardWriteResponseDTO;
-    console.log(categoryIdNameItems);
     setCategoryIdNameItems(categoryIdNameItems);
   };
 
@@ -125,14 +124,12 @@ const BoardWrite = () => {
   ) => {
     if (responseBody === null) return;
     const { code } = responseBody;
-    console.log(code);
     if (code === "DBE") alert("데이터베이스 오류입니다.");
     if (code === "FE") alert("형식 오류입니다.");
     if (code === "PTL") alert("업로드할 파일이 너무 큽니다.");
     if (code !== "SU") return;
     const { boardId } = responseBody as PostBoardResponseDTO;
     alert("게시글이 등록되었습니다.");
-    console.log(boardId);
 
     navigate(READ_PATH(String(boardId)));
   };

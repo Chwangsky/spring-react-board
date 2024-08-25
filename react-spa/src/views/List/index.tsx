@@ -46,8 +46,13 @@ const BoardList = () => {
     null
   );
 
-  // 데이터 로드 함수
-  const loadBoardList = useCallback(() => {
+  // effect: 컴포넌트 초기화 시 데이터를 한 번만 로드
+  useEffect(() => {
+    fetchBoardList();
+  }, []);
+
+  // function: 검색어에 따른 목록을 get하는 함수
+  const fetchBoardList = () => {
     const requestBody: BoardListRequestDTO = {
       regDateStart,
       regDateEnd,
@@ -56,19 +61,19 @@ const BoardList = () => {
       page,
     };
     getBoardListRequest(requestBody).then(getBoardListResponse);
-  }, [regDateStart, regDateEnd, categoryId, keyword, page]);
+  };
 
-  // effect: 컴포넌트 초기화 시 데이터를 한 번만 로드
-  useEffect(() => {
-    loadBoardList();
-  }, [loadBoardList]);
-
-  useEffect(() => {
-    if (page !== 1) {
-      // 페이지가 변경될 때만 데이터를 로드
-      loadBoardList();
-    }
-  }, [page, loadBoardList]);
+  // function: 검색어에 따른 목록을 get하는 함수
+  const fetchBoardListWithPage = (page: number) => {
+    const requestBody: BoardListRequestDTO = {
+      regDateStart,
+      regDateEnd,
+      categoryId,
+      keyword,
+      page,
+    };
+    getBoardListRequest(requestBody).then(getBoardListResponse);
+  };
 
   // 서버 응답 처리 함수
   const getBoardListResponse = (
@@ -101,15 +106,15 @@ const BoardList = () => {
     setCategoryId(categoryId);
   };
 
-  // 검색 버튼 클릭 핸들러
+  // handler: 검색 버튼 클릭 핸들러
   const onSearchButtonClickHandler = () => {
-    setPage(1); // 검색 시 페이지를 초기화하고 데이터 로드
-    loadBoardList();
+    setPage(1);
+    fetchBoardList();
   };
 
-  const handlePageChange = (page: number) => {
-    setPage(page);
-    loadBoardList();
+  // change: 페이지 버튼 클릭 핸들러
+  const onPageButtonClickHandler = (page: number) => {
+    fetchBoardListWithPage(page);
   };
 
   const truncateTitle = (title: string) => {
@@ -224,7 +229,7 @@ const BoardList = () => {
         {paginationItem && (
           <Pagination
             {...paginationItem}
-            onPageButtonClickHnalder={handlePageChange}
+            onPageButtonClickHandler={onPageButtonClickHandler}
           />
         )}
       </div>

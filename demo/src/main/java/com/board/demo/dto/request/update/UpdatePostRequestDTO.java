@@ -32,6 +32,4 @@ public class UpdatePostRequestDTO {
     String content;
 
     List<Integer> filesToRemove;
-
-    MultipartFile[] newFiles;
 }

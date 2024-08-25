@@ -109,8 +109,6 @@ const BoardDetail = () => {
     if (code !== "SU") return;
 
     const { boardId } = responseBody as PostCommentResponseDTO;
-    console.log(READ_PATH(String(boardId))); // /boards/free/views/123 and my http://localhost:3000/boards/free/views/123
-    // make redi
     navigate(0);
   };
 
@@ -127,7 +125,6 @@ const BoardDetail = () => {
       boardId: numBoardId,
       password,
     };
-    console.log(requestBody);
     deleteRequest(requestBody).then(deleteResponse);
   };
 

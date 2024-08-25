@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.board.demo.dto.request.update.UpdatePostRequestDTO;
 import com.board.demo.dto.response.update.PostUpdateResponseDTO;
@@ -32,8 +34,9 @@ public class UpdateController {
 
     @PostMapping
     public ResponseEntity<? super PostUpdateResponseDTO> postModifyForm(
-            @RequestBody @Valid UpdatePostRequestDTO updatePostRequestDTO) {
-        return boardUpdateService.postUpdate(updatePostRequestDTO);
+            @Valid @RequestPart(name = "data") UpdatePostRequestDTO updatePostRequestDTO,
+            @RequestPart(name = "files", required = false) MultipartFile[] filesToUpload) {
+        return boardUpdateService.postUpdate(updatePostRequestDTO, filesToUpload);
     }
 
 }

@@ -55,7 +55,8 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Override
     @Transactional
-    public ResponseEntity<? super PostUpdateResponseDTO> postUpdate(UpdatePostRequestDTO updatePostRequestDTO)
+    public ResponseEntity<? super PostUpdateResponseDTO> postUpdate(UpdatePostRequestDTO updatePostRequestDTO,
+            MultipartFile[] newFiles)
             throws RuntimeException {
 
         Integer boardId = updatePostRequestDTO.getBoardId();
@@ -83,7 +84,6 @@ public class UpdateServiceImpl implements UpdateService {
             }
 
             // 새로운 파일 저장
-            MultipartFile[] newFiles = updatePostRequestDTO.getNewFiles();
             if (newFiles != null && newFiles.length > 0) {
                 List<FileInsertEntity> savedFiles = fileService.saveFiles(newFiles, boardId);
                 savedFiles.forEach(mapper::insertFile);
