@@ -1,30 +1,26 @@
-import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
-import { getBoardListRequest } from "../../apis";
 import dayjs from "dayjs";
-import { BoardListResponseDTO } from "../../apis/response/list";
+import { useEffect, useState } from "react";
+import { FaPaperclip } from "react-icons/fa6";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { getBoardListRequest } from "../../apis";
 import { BoardListRequestDTO } from "../../apis/request";
+import { BoardListResponseDTO } from "../../apis/response/list";
 import ResponseDTO from "../../apis/response/response.dto";
+import { Pagination } from "../../components/Pagination";
+import { LIST_PATH, READ_PATH, WRITE_PATH } from "../../constant";
 import {
   BoardListItem,
   CategoryIdNameItem,
   PaginationItem,
 } from "../../types/interface";
-import { Pagination } from "../../components/Pagination";
 import { formatDate } from "../../util/formatDate";
-import { useNavigate } from "react-router-dom";
-import { READ_PATH, WRITE_PATH } from "../../constant";
-import { FaPaperclip } from "react-icons/fa6";
 
 const BoardList = () => {
   const now = dayjs();
 
   const navigate = useNavigate();
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // 상태 정의
   const [regDateStart, setRegDateStart] = useState<string>(
@@ -48,23 +44,33 @@ const BoardList = () => {
 
   // effect: 컴포넌트 초기화 시 데이터를 한 번만 로드
   useEffect(() => {
-    fetchBoardList();
+    const regDateStart =
+      searchParams.get("regDateStart") ||
+      now.subtract(1, "year").format("YYYY-MM-DD");
+    const regDateEnd =
+      searchParams.get("regDateEnd") || now.format("YYYY-MM-DD");
+    const keyword = searchParams.get("keyword") || "";
+    const categoryId = searchParams.get("categoryId") || null;
+    const page = searchParams.get("page") || "1";
+
+    fetchBoardList(
+      regDateStart,
+      regDateEnd,
+      categoryId != null ? Number(categoryId) : null,
+      keyword,
+      Number(page)
+    );
   }, []);
 
   // function: 검색어에 따른 목록을 get하는 함수
-  const fetchBoardList = () => {
-    const requestBody: BoardListRequestDTO = {
-      regDateStart,
-      regDateEnd,
-      categoryId,
-      keyword,
-      page,
-    };
-    getBoardListRequest(requestBody).then(getBoardListResponse);
-  };
-
-  // function: 검색어에 따른 목록을 get하는 함수
-  const fetchBoardListWithPage = (page: number) => {
+  const fetchBoardList = (
+    regDateStart: string,
+    regDateEnd: string,
+    categoryId: number | null,
+    keyword: string,
+    page: number
+  ) => {
+    console.log(categoryId);
     const requestBody: BoardListRequestDTO = {
       regDateStart,
       regDateEnd,
@@ -100,6 +106,7 @@ const BoardList = () => {
     setBoardListItems(boardListItems);
     setCategoryIdNameItems(categoryIdNameItems);
     setPaginationItem(paginationItem);
+
     setRegDateStart(regDateStart);
     setRegDateEnd(regDateEnd);
     setKeyword(keyword);
@@ -108,13 +115,16 @@ const BoardList = () => {
 
   // handler: 검색 버튼 클릭 핸들러
   const onSearchButtonClickHandler = () => {
-    setPage(1);
-    fetchBoardList();
+    navigate(
+      `${LIST_PATH()}?regDateStart=${regDateStart}&regDateEnd=${regDateEnd}&keyword=${keyword}&categoryId=${categoryId}&page=${page}`
+    );
   };
 
   // change: 페이지 버튼 클릭 핸들러
   const onPageButtonClickHandler = (page: number) => {
-    fetchBoardListWithPage(page);
+    navigate(
+      `${LIST_PATH()}?regDateStart=${regDateStart}&regDateEnd=${regDateEnd}&keyword=${keyword}&categoryId=${categoryId}&page=${page}`
+    );
   };
 
   const truncateTitle = (title: string) => {
