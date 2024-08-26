@@ -49,26 +49,24 @@ const BoardList = () => {
       now.subtract(1, "year").format("YYYY-MM-DD");
     const regDateEnd =
       searchParams.get("regDateEnd") || now.format("YYYY-MM-DD");
-    const keyword = searchParams.get("keyword") || "";
-    const categoryId = searchParams.get("categoryId") || null;
-    const page = searchParams.get("page") || "1";
+    let keyword = searchParams.get("keyword");
+    if (keyword === "null") keyword = null;
+    const categoryIdParam = searchParams.get("categoryId");
+    const categoryId =
+      categoryIdParam != "null" ? Number(categoryIdParam) : null;
+    console.log(categoryId);
+    let page = searchParams.get("page") || 1;
 
-    fetchBoardList(
-      regDateStart,
-      regDateEnd,
-      categoryId != null ? Number(categoryId) : null,
-      keyword,
-      Number(page)
-    );
-  }, []);
+    fetchBoardList(regDateStart, regDateEnd, categoryId, keyword, Number(page));
+  }, [searchParams]);
 
   // function: 검색어에 따른 목록을 get하는 함수
   const fetchBoardList = (
     regDateStart: string,
     regDateEnd: string,
     categoryId: number | null,
-    keyword: string,
-    page: number
+    keyword: string | null,
+    page: number | null
   ) => {
     console.log(categoryId);
     const requestBody: BoardListRequestDTO = {
